@@ -1,0 +1,356 @@
+:root {
+  /* Colores beige/marrones */
+  --color-primario: #c9b397;
+  --color-primario-oscuro: #ac9981;
+  --color-primario-claro: #f5f0e8;
+  
+  /* Colores adicionales */
+  --color-texto: #333333;
+  --color-texto-claro: #666666;
+  --color-fondo: #ffffff;
+  --color-borde: #d4c4b0;
+  --color-oferta: #e74c3c;
+  --color-whatsapp: #25D366;
+  --color-instagram: #E1306C;
+  
+  /* Espaciados */
+  --espaciado: 1rem;
+  --espaciado-doble: 2rem;
+  
+  /* Sombras */
+  --sombra-suave: 0 2px 8px rgba(0,0,0,0.1);
+  --sombra-media: 0 4px 12px rgba(0,0,0,0.15);
+  
+  /* Transiciones */
+  --transicion: all 0.3s ease;
+}
+
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: var(--color-texto);
+  line-height: 1.6;
+  background-color: var(--color-primario-claro);
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background-color: var(--color-primario-oscuro);
+  padding: var(--espaciado);
+  text-align: center;
+  box-shadow: var(--sombra-suave);
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaciado);
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-borde);
+}
+
+header h1 {
+  font-family: 'Gowun Batang', serif;
+  color: white;
+  font-size: 2rem;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('./img/hero-background.jpg') center/cover;
+  color: white;
+  padding: 4rem var(--espaciado);
+  text-align: center;
+  margin-bottom: var(--espaciado-doble);
+}
+
+.hero-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-family: 'Gowun Batang', serif;
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Productos */
+.productos-section {
+  padding: 0 var(--espaciado) var(--espaciado-doble);
+}
+
+.filtros {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--espaciado);
+  margin-bottom: var(--espaciado-doble);
+  flex-wrap: wrap;
+}
+
+.filtros label {
+  font-weight: 600;
+}
+
+.filtros select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  background-color: var(--color-fondo);
+  min-width: 200px;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--espaciado-doble);
+}
+
+.producto {
+  background-color: var(--color-fondo);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--sombra-suave);
+  transition: var(--transicion);
+}
+
+.producto:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sombra-media);
+}
+
+.producto h2 {
+  font-size: 1.5rem;
+  padding: 1rem 1rem 0;
+  text-align: center;
+  color: var(--color-texto);
+}
+
+.imagenes {
+  position: relative;
+  margin: 1rem 0;
+}
+
+.imagenes img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: var(--transicion);
+}
+
+.imagenes img:hover {
+  opacity: 0.9;
+}
+
+.badge-oferta {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--color-oferta);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.detalles-producto {
+  padding: 0 1rem 1rem;
+}
+
+.detalles-producto p {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.precio {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--color-texto);
+}
+
+.precio .tachado {
+  text-decoration: line-through;
+  color: var(--color-texto-claro);
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+}
+
+.btn-detalles {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: var(--color-primario-claro);
+  border: none;
+  border-top: 1px solid var(--color-borde);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transicion);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-detalles:hover {
+  background-color: var(--color-borde);
+}
+
+.btn-compra {
+  display: block;
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 1rem;
+  background-color: var(--color-whatsapp);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transicion);
+}
+
+.btn-compra:hover {
+  background-color: #128C7E;
+}
+
+/* Ubicación */
+.ubicacion {
+  padding: var(--espaciado-doble) var(--espaciado);
+  text-align: center;
+  background-color: var(--color-fondo);
+}
+
+.ubicacion h2 {
+  margin-bottom: var(--espaciado-doble);
+  font-family: 'Gowun Batang', serif;
+}
+
+.mapa-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--sombra-media);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Footer */
+footer {
+  background-color: var(--color-primario-oscuro);
+  color: white;
+  padding: var(--espaciado-doble) var(--espaciado);
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contacto {
+  margin-bottom: var(--espaciado-doble);
+  text-align: center;
+}
+
+.contacto h3 {
+  font-family: 'Gowun Batang', serif;
+  margin-bottom: var(--espaciado);
+  font-size: 1.5rem;
+}
+
+.whatsapp-btn, .instagram-btn {
+  display: block;
+  padding: 0.8rem;
+  margin: 0.8rem auto;
+  border-radius: 4px;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  max-width: 300px;
+  transition: var(--transicion);
+}
+
+.whatsapp-btn {
+  background-color: var(--color-whatsapp);
+}
+
+.whatsapp-btn:hover {
+  background-color: #128C7E;
+}
+
+.instagram-btn {
+  background-color: var(--color-instagram);
+}
+
+.instagram-btn:hover {
+  background-color: #C13584;
+}
+
+.derechos {
+  text-align: center;
+  padding-top: var(--espaciado);
+  border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-text h2 {
+    font-size: 2rem;
+  }
+  
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .mapa-container {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 3rem var(--espaciado);
+  }
+  
+  .hero-text h2 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-text p {
+    font-size: 1rem;
+  }
+  
+  .filtros {
+    flex-direction: column;
+  }
+  
+  .filtros select {
+    width: 100%;
+  }
+}
