@@ -1,46 +1,101 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-const Producto = ({ producto }) => {
+const Producto = ({ producto, index }) => {
   const [activeImage, setActiveImage] = useState(0);
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
-    <article className="producto">
-      <h2>{producto.nombre}</h2>
-      <div className="imagenes">
-        <img
-          src={producto.imagenes[activeImage]}
-          alt={producto.nombre}
-          onClick={() => setActiveImage((prev) => (prev + 1) % producto.imagenes.length)}
-          loading="lazy"
-        />
-        {producto.oferta && <div className="badge-oferta">OFERTA</div>}
+    <article 
+      className="producto"
+      style={{ animationDelay: `${index * 150}ms` }}
+    >
+      <div className="producto-header">
+        <h2>{producto.nombre}</h2>
+        {producto.oferta && <span className="badge-oferta">Oferta especial</span>}
       </div>
       
-      <div className={`detalles-producto ${mostrarDetalles ? 'visible' : ''}`}>
-        <p><i className="icono">📏</i> {producto.medidas}</p>
-        <p className="precio">
-          {producto.precioAnterior && <span className="tachado">{producto.precioAnterior}</span>}
-          <strong> {producto.precio}</strong>
-        </p>
-        <p><i className="icono">📦</i> {producto.stock}</p>
-        <p><i className="icono">🎨</i> {producto.colores}</p>
-        <a 
-          href="https://walink.co/35f966" 
-          className="btn-compra"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Consultar por WhatsApp
-        </a>
+      <div className="imagenes-container">
+        <div className="imagen-principal">
+          <img
+            src={producto.imagenes[activeImage]}
+            alt={`${producto.nombre} - Vista ${activeImage + 1}`}
+            onClick={() => setActiveImage((prev) => (prev + 1) % producto.imagenes.length)}
+            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
+            className={imageLoaded ? 'loaded' : ''}
+          />
+          {producto.imagenes.length > 1 && (
+            <div className="indicadores-imagen">
+              {producto.imagenes.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`indicador ${idx === activeImage ? 'activo' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImage(idx);
+                  }}
+                  aria-label={`Ver imagen ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-      <button 
-        className="btn-detalles"
-        onClick={() => setMostrarDetalles(!mostrarDetalles)}
-      >
-        {mostrarDetalles ? '▲ Menos detalles' : '▼ Ver detalles'}
-      </button>
+      
+      <div className="producto-info">
+        <div className="precio-stock">
+          <div className="precio">
+            {producto.precioAnterior && (
+              <span className="precio-anterior">{producto.precioAnterior}</span>
+            )}
+            <span className="precio-actual">{producto.precio}</span>
+          </div>
+          <span className="stock">{producto.stock}</span>
+        </div>
+        
+        <button 
+          className="btn-detalles"
+          onClick={() => setMostrarDetalles(!mostrarDetalles)}
+          aria-expanded={mostrarDetalles}
+        >
+          <span>{mostrarDetalles ? 'Ocultar detalles' : 'Ver detalles'}</span>
+          <svg 
+            className={`chevron ${mostrarDetalles ? 'rotated' : ''}`}
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2"
+          >
+            <polyline points="6,9 12,15 18,9"></polyline>
+          </svg>
+        </button>
+        
+        <div className={`detalles-producto ${mostrarDetalles ? 'visible' : ''}`}>
+          <div className="detalle-item">
+            <span className="detalle-label">Medidas:</span>
+            <span className="detalle-valor">{producto.medidas}</span>
+          </div>
+          <div className="detalle-item">
+            <span className="detalle-label">Colores disponibles:</span>
+            <span className="detalle-valor">{producto.colores}</span>
+          </div>
+          <a 
+            href="https://walink.co/35f966" 
+            className="btn-compra"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+            Consultar por WhatsApp
+          </a>
+        </div>
+      </div>
     </article>
   );
 };
@@ -112,6 +167,8 @@ function App() {
     ? productos.filter(p => p.colores.toLowerCase().includes(colorFilter.toLowerCase()))
     : productos;
 
+  const colores = ["blanco", "hueso", "negro", "marrón", "turquesa"];
+
   useEffect(() => {
     document.title = 'Roma Mora - Espejos Artesanales en Neuquén';
   }, []);
@@ -135,23 +192,24 @@ function App() {
 
         <section className="productos-section">
           <div className="filtros">
-            <label>Filtrar por color:</label>
+            <label htmlFor="color-filter">Filtrar por color</label>
             <select 
+              id="color-filter"
               value={colorFilter}
               onChange={(e) => setColorFilter(e.target.value)}
             >
               <option value="">Todos los colores</option>
-              <option value="blanco">Blanco</option>
-              <option value="hueso">Hueso</option>
-              <option value="negro">Negro</option>
-              <option value="marrón">Marrón</option>
-              <option value="turquesa">Turquesa</option>
+              {colores.map(color => (
+                <option key={color} value={color}>
+                  {color.charAt(0).toUpperCase() + color.slice(1)}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="productos-grid">
-            {filteredProducts.map((producto) => (
-              <Producto key={producto.id} producto={producto} />
+            {filteredProducts.map((producto, index) => (
+              <Producto key={producto.id} producto={producto} index={index} />
             ))}
           </div>
         </section>
@@ -168,7 +226,7 @@ function App() {
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
               title="Ubicación Roma Mora"
-            ></iframe>
+            />
           </div>
         </section>
       </main>
